@@ -16,8 +16,8 @@ import (
 	"github.com/google/syzkaller/prog"
 )
 
-// Corpus object represents a set of syzkaller-found programs that
-// cover the kernel up to the currently reached frontiers.
+// Corpus 对象表示一组由 syzkaller 发现的程序集合，
+// 这些程序覆盖了内核当前已达到的边界范围。
 type Corpus struct {
 	ctx      context.Context
 	mu       sync.RWMutex

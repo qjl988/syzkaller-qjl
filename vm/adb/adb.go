@@ -41,32 +41,33 @@ type Config struct {
 	Adb     string            `json:"adb"`     // adb binary name ("adb" by default)
 	Devices []json.RawMessage `json:"devices"` // list of adb devices to use
 
-	// Ensure that a device battery level is at 20+% before fuzzing.
-	// Sometimes we observe that a device can't charge during heavy fuzzing
-	// and eventually powers down (which then requires manual intervention).
-	// This option is enabled by default. Turn it off if your devices
-	// don't have battery service, or it causes problems otherwise.
+	// 确保设备电池电量在开始模糊测试前至少有 20% 以上。
+	// 我们观察到有时在高强度模糊测试期间设备无法充电，
+	// 最终会导致设备关机（这时就需要人工干预）。
+	// 该选项默认是启用的。如果你的设备没有电池服务，
+	// 或者该功能导致其他问题，可以将其关闭。
 	BatteryCheck bool `json:"battery_check"`
-	// If this option is set (default), the device is rebooted after each crash.
-	// Set it to false to disable reboots.
+	// 如果设置了该选项（默认开启），设备会在每次崩溃后重启。
+	// 设置为 false 可以禁用重启功能。
 	TargetReboot  bool   `json:"target_reboot"`
-	RepairScript  string `json:"repair_script"`  // script to execute before each startup
-	StartupScript string `json:"startup_script"` // script to execute after each startup
+	RepairScript  string `json:"repair_script"`  // 修复脚本 - 在每次启动前执行的脚本
+	StartupScript string `json:"startup_script"` // 启动脚本 - 在每次启动后执行的脚本
 }
 
 type Pool struct {
-	env *vmimpl.Env
-	cfg *Config
+    env *vmimpl.Env    // 虚拟机环境配置指针
+    cfg *Config        // ADB 特定配置指针
 }
 
+// instance 表示一个正在运行的 ADB 设备实例
 type instance struct {
-	cfg      *Config
-	adbBin   string
-	device   string
-	console  string
-	closed   chan bool
-	debug    bool
-	timeouts targets.Timeouts
+    cfg      *Config           // ADB 配置信息，包含设备列表、电池检查等设置
+    adbBin   string           // adb 二进制文件的路径
+    device   string           // 设备的序列号或标识符
+    console  string           // 设备的控制台路径（如 /dev/ttyUSB0）
+    closed   chan bool        // 用于通知实例关闭的通道
+    debug    bool            // 是否启用调试模式
+    timeouts targets.Timeouts // 各种操作的超时设置
 }
 
 var (
