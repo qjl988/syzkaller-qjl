@@ -2,6 +2,8 @@ module github.com/google/syzkaller
 
 go 1.22.1
 
+toolchain go1.24.1
+
 require (
 	cloud.google.com/go v0.116.0
 	cloud.google.com/go/batch v1.11.0
@@ -36,7 +38,7 @@ require (
 	google.golang.org/api v0.198.0
 	google.golang.org/appengine/v2 v2.0.5
 	google.golang.org/genproto v0.0.0-20240903143218-8af14fe29dc1
-	google.golang.org/protobuf v1.35.2
+	google.golang.org/protobuf v1.36.6
 	gopkg.in/yaml.v3 v3.0.1
 )
 
